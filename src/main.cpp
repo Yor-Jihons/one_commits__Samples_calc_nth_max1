@@ -64,7 +64,81 @@ namespace Original{
     }
 }
 
+namespace Original{
+    class Person{
+        public:
+            Person( const std::string& name, int point ) : name_(name),point_(point){}
+            ~Person() = default;
+
+            bool IsGreaterThan( const Person* p ){
+                if( this->point_ > p->point_ ) return true;
+            return false;
+            }
+
+            Person* Clone( void ) const{
+                return new Person( this->name_, this->point_ );
+            }
+
+            std::string ToString( void ) const{
+                std::stringstream ss;
+                ss << this->name_ << " " << this->point_;
+            return ss.str();
+            }
+        private:
+            std::string name_;
+            int point_;
+    };
+
+    class PersonManager{
+        public:
+            PersonManager() : persons_(std::vector<Person*>()){}
+            ~PersonManager(){
+                for( int i = 0; i < static_cast<int>(persons_.size()); i++ ){
+                    if( persons_[i] ) delete persons_[i];
+                }
+            }
+
+            void Add( Person* person ){
+                this->persons_.push_back( person );
+            }
+
+            Person* CalcMaxPerson(){
+                int pos = 0;
+                for( int i = 1; i < static_cast<int>(persons_.size()); i++ ){
+                    if( persons_.at( i ) == nullptr ) continue;
+
+                    if( persons_[i]->IsGreaterThan( persons_[pos] ) ){
+                        pos = i;
+                    }
+                }
+                auto res = persons_[pos]->Clone();
+                delete persons_[pos];
+                persons_[pos] = nullptr;
+            return res;
+            }
+        private:
+            std::vector<Person*> persons_;
+    };
+}
+
 int main( int argc, char** argv ){
-    
+    int m, n;
+    cin >> m >> n;
+
+    Original::PersonManager manager;
+    for( int i = 0; i < m; i++ ){
+        std::string name;
+        int point;
+        cin >> name >> point;
+        manager.Add( new Original::Person( name, point ) );
+    }
+
+    Original::Person* resPerson;
+    for( int i = 0; i < n; i++ ){
+        resPerson = manager.CalcMaxPerson();
+    }
+
+    cout << resPerson->ToString() << endl;
+
 return 0;
 }
