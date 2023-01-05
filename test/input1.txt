@@ -1,0 +1,11 @@
+10 3
+Taro 65
+Jiro 70
+Sakura 83
+Tsubaki 64
+Atsushi 84
+Kenji 85
+Megumi 69
+Tomomi 59
+Takashi 49
+Tomoko 80
